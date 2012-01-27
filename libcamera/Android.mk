@@ -1,4 +1,4 @@
-ifneq ($(filter delta, $(TARGET_BOOTLOADER_BOARD_NAME)),)
+ifneq ($(filter filter mimmi robyn shakira , $(TARGET_BOOTLOADER_BOARD_NAME)),)
 
 # When zero we link against libmmcamera; when 1, we dlopen libmmcamera.
 DLOPEN_LIBMMCAMERA:=1
