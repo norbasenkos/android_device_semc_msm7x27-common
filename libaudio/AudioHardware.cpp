@@ -423,11 +423,9 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
     key = String8(FM_RADIO_ACTIVE_KEY);
     if (param.get(key, value) == NO_ERROR) {
        if (value == "on") {
-          LOGE("HOOKED ON!");
           setFmOnOff(true);
        }
        else if (value == "off") {
-          LOGE("HOOKED OFF!");
           setFmOnOff(false);
        }
     }

@@ -38,7 +38,7 @@ PRODUCT_PACKAGES += \
     librs_jni \
     LiveWallpapers \
     MagicSmokeWallpapers \
-    VisualizationWallpapers    
+    VisualizationWallpapers
 
 # Extra packages
 PRODUCT_PACKAGES += \
@@ -46,7 +46,18 @@ PRODUCT_PACKAGES += \
     screencap \
     hostap \
     rzscontrol \
+    CMUpdateNotify \
     com.android.future.usb.accessory
+
+# FM Radio
+PRODUCT_PACKAGES += \
+    hciattach \
+    com.ti.fm.fmreceiverif.xml \
+    fmreceiverif \
+    Fmapplication \
+    libfmrx \
+    libfm_stack \
+    FmRxService
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -191,11 +202,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Enable ti hotspot
 PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.hotspot.ti=1
-
-# Workaround for usb disconnect kickback
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.tethering.kb_disconnect=1
+    wifi.hotspot.ti=1 \
+    wifi.ap.interface = tiap0
 
 # Personalization
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -207,11 +215,9 @@ PRODUCT_LOCALES += en
 
 # Extra prebuilt binaries
 PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/FmRxService.apk:system/app/FmRxService.apk \
     device/semc/msm7x27-common/prebuilt/Radio.apk:system/app/Radio.apk \
     device/semc/msm7x27-common/prebuilt/SystemConnector.apk:system/app/SystemConnector.apk \
     device/semc/msm7x27-common/prebuilt/com.sonyericsson.suquashi.jar:system/framework/com.sonyericsson.suquashi.jar \
-    device/semc/msm7x27-common/prebuilt/fmreceiverif.jar:system/framework/fmreceiverif.jar \
     device/semc/msm7x27-common/prebuilt/SemcSmfmf.jar:system/framework/SemcSmfmf.jar \
     device/semc/msm7x27-common/prebuilt/vold.fstab:system/etc/vold.fstab \
     device/semc/msm7x27-common/prebuilt/usr/keylayout/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl \

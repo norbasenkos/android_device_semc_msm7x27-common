@@ -43,11 +43,12 @@ WIFI_DRIVER_MODULE_NAME := tiwlan_drv
 WIFI_FIRMWARE_LOADER := wlan_loader
 WIFI_EXT_MODULE_PATH := /system/lib/modules/sdio.ko
 WIFI_EXT_MODULE_NAME := sdio
+WIFI_AP_DRIVER_MODULE_PATH := /system/lib/modules/tiap_drv.ko
+WIFI_AP_DRIVER_MODULE_NAME := tiap_drv
+WIFI_AP_FIRMWARE_LOADER := wlan_ap_loader
 
 ## Usb
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
-BOARD_SDCARD_DEVICE_INTERNAL := /dev/block/vold/179:1
-BOARD_SDEXT_DEVICE := /dev/block/vold/179:2
 BOARD_UMS_LUNFILE := "/sys/devices/platform/usb_mass_storage/lun0/file"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun0/file"
 
@@ -82,7 +83,7 @@ TARGET_GRALLOC_USES_ASHMEM := false
 #BOARD_USE_NASTY_PTHREAD_CREATE_HACK := false
 #TARGET_HAVE_BYPASS := true # NEEDED(?) when we have new adreno libs (affects libgralloc and libhwcomposer)
 #BUILD_WITH_FULL_STAGEFRIGHT=true #not in grep anyways
-#TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true #not in grep anyways
+#TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
 
 ## Skia
 BOARD_USE_SKIA_LCDTEXT := true
