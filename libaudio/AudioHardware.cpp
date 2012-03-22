@@ -45,7 +45,7 @@ namespace android_audio_legacy{
 static int audpre_index, tx_iir_index;
 static void * acoustic;
 const uint32_t AudioHardware::inputSamplingRates[] = {
-        8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000
+        8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 64000, 96000
 };
 
 static int get_audpp_filter(void);
@@ -159,7 +159,7 @@ AudioHardware::AudioHardware() :
         }
         else LOGE("Could not retrieve number of MSM SND endpoints.");
 
-        int AUTO_VOLUME_ENABLED = 0; // setting enabled as default
+        int AUTO_VOLUME_ENABLED = 1; // setting enabled as default
 
         static const char *const path = "/system/etc/AutoVolumeControl.txt";
         int txtfd;
@@ -273,6 +273,17 @@ AudioStreamIn* AudioHardware::openInputStream(
 {
     // check for valid input source
     if (!AudioSystem::isInputDevice((AudioSystem::audio_devices)devices)) {
+        return 0;
+    }
+
+    if ( (mMode == AudioSystem::MODE_IN_CALL) &&
+         (getInputSampleRate(*sampleRate) > AUDIO_HW_IN_SAMPLERATE) &&
+         (*format == AUDIO_HW_IN_FORMAT) )
+    {
+        LOGE("PCM recording, in a voice call, with sample rate more than 8K not supported \
+                re-configure with 8K and try software re-sampler ");
+        *status = BAD_VALUE;
+        *sampleRate = AUDIO_HW_IN_SAMPLERATE;
         return 0;
     }
 
@@ -415,6 +426,9 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
         } else {
             mTtyMode = TTY_OFF;
         }
+        if(mMode != AudioSystem::MODE_IN_CALL){
+           return NO_ERROR;
+        }
     } else {
         mTtyMode = TTY_OFF;
     }
@@ -423,9 +437,11 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
     key = String8(FM_RADIO_ACTIVE_KEY);
     if (param.get(key, value) == NO_ERROR) {
        if (value == "on") {
+          LOGI("fm_radio_active true...");
           setFmOnOff(true);
        }
        else if (value == "off") {
+          LOGI("fm_radio_active false...");
           setFmOnOff(false);
        }
     }
@@ -609,7 +625,7 @@ int check_and_set_audpp_parameters(char *buf, int size)
             if (!(p = strtok(NULL, seps)))
                 goto token_err;
 
-            eq_cal(eq[i].gain, eq[i].freq, 48000, eq[i].type, eq[i].qf, (int32_t*)numerator, (int32_t *)denominator, shift);
+            eq_cal(eq[i].gain, eq[i].freq, 96000, eq[i].type, eq[i].qf, (int32_t*)numerator, (int32_t *)denominator, shift);
             for (j = 0; j < 6; j++) {
                 eqalizer[device_id].params[ ( i * 6) + j] = numerator[j];
             }
@@ -1061,6 +1077,8 @@ static int msm72xx_enable_postproc(bool state)
 static unsigned calculate_audpre_table_index(unsigned index)
 {
     switch (index) {
+        case 96000:    return SAMP_RATE_INDX_96000;
+        case 64000:    return SAMP_RATE_INDX_64000;
         case 48000:    return SAMP_RATE_INDX_48000;
         case 44100:    return SAMP_RATE_INDX_44100;
         case 32000:    return SAMP_RATE_INDX_32000;
@@ -1140,7 +1158,7 @@ status_t AudioHardware::setVoiceVolume(float v)
         v = 1.0;
     }
 
-    int vol = lrint(v * 5.0);
+    int vol = lrint(v * 6.0) + 1;
     LOGD("setVoiceVolume(%f)\n", v);
     LOGI("Setting in-call volume to %d (available range is 0 to 7)\n", vol);
 
@@ -1158,7 +1176,7 @@ status_t AudioHardware::setVoiceVolume(float v)
 status_t AudioHardware::setMasterVolume(float v)
 {
     android::Mutex::Autolock lock(mLock);
-    int vol = ceil(v * 1.0);
+    int vol = ceil(v * 5.0);
     LOGI("Set master volume to %d.\n", vol);
     set_volume_rpc(SND_DEVICE_HANDSET_CL, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_FARFIELD_CL, SND_METHOD_VOICE, vol, m7xsnddriverfd);
@@ -1181,8 +1199,10 @@ status_t AudioHardware::setFmOnOff(bool onoff)
     int ret;
 
     if (onoff) {
+        LOGI("Setting fm radio to true");
         mFmRadioEnabled = true;
     } else {
+        LOGI("Setting fm radio to false");
         mFmRadioEnabled = false;
     }
 
@@ -1441,9 +1461,16 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
                 new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE); }
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
             if (mFmRadioEnabled) {
-                LOGI("Routing FM audio to Speakerphone\n");
-                new_snd_device = SND_DEVICE_FARFIELD_CL_FM;
-                new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
+                if (mFmRadioSpeakerEnabled) {
+                    LOGI("Routing FM audio to Speakerphone\n");
+                    new_snd_device = SND_DEVICE_FARFIELD_CL_FM;
+                    new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
+                }
+                else {
+                    LOGI("Routing FM audio to Wired Headset\n");
+                    new_snd_device = SND_DEVICE_HEADPHONE_FM;
+                    new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
+                }
             } else {
                 LOGI("Routing audio to Speakerphone\n");
                 new_snd_device = SND_DEVICE_FARFIELD_CL;
