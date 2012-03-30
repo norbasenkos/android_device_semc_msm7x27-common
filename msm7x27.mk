@@ -1,8 +1,10 @@
 #
-# Set ro.modversion
+# Set ro.modversion and ro.cm.version
 #
+MiniCM_VERSION := MiniCM9-3.0.0
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.modversion=MiniCM9-3.0.0
+	ro.modversion=$(MiniCM_VERSION) \
+	ro.cm.version=$(MiniCM_VERSION)
 
 # Gps sensors audio
 PRODUCT_PACKAGES += \
@@ -46,7 +48,7 @@ PRODUCT_PACKAGES += \
     screencap \
     hostap \
     rzscontrol \
-    CMUpdateNotify \
+    UpdateNotify \
     com.android.future.usb.accessory
 
 # FM Radio
@@ -92,7 +94,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.gprsclass=10 \
     ro.ril.hsupa.category=5 \
     ro.ril.disable.power.collapse=1 \
-    ro.wifi.channels=14 \
+    ro.telephony.ril_class=SemcRIL \
     wifi.interface=tiwlan0
 
 # Time between scans in seconds. Keep it high to minimize battery drain.
@@ -205,35 +207,40 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.hotspot.ti=1 \
     wifi.ap.interface = tiap0
 
-# Personalization
+# Default ringtone
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.config.ringtone=Ring_Synth_04.ogg \
-    ro.config.notification_sound=pixiedust.ogg \
-    ro.config.alarm_alert=Alarm_Classic.ogg
+    ro.config.ringtone=CyanTone.ogg \
+    ro.config.notification_sound=CyanMessage.ogg \
+    ro.config.alarm_alert=CyanAlarm.ogg
 
 PRODUCT_LOCALES += en
 
 # Extra prebuilt binaries
 PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/com.sonyericsson.suquashi.jar:system/framework/com.sonyericsson.suquashi.jar \
     device/semc/msm7x27-common/prebuilt/Radio.apk:system/app/Radio.apk \
     device/semc/msm7x27-common/prebuilt/SystemConnector.apk:system/app/SystemConnector.apk \
-    device/semc/msm7x27-common/prebuilt/com.sonyericsson.suquashi.jar:system/framework/com.sonyericsson.suquashi.jar \
     device/semc/msm7x27-common/prebuilt/SemcSmfmf.jar:system/framework/SemcSmfmf.jar \
     device/semc/msm7x27-common/prebuilt/vold.fstab:system/etc/vold.fstab \
-    device/semc/msm7x27-common/prebuilt/usr/keylayout/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl \
     device/semc/msm7x27-common/prebuilt/AudioFilter.csv:system/etc/AudioFilter.csv \
     device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
     device/semc/msm7x27-common/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc
 
-## Hotspot
+# Keylayouts
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/usr/keylayout/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl \
+    device/semc/msm7x27-common/prebuilt/usr/keylayout/qwerty.kl:system/usr/keylayout/qwerty.kl \
+    device/semc/msm7x27-common/prebuilt/usr/keylayout/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
+    device/semc/msm7x27-common/prebuilt/usr/keylayout/systemconnector.kl:system/usr/keylayout/systemconnector.kl \
+    device/semc/msm7x27-common/prebuilt/usr/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl
+
+## Wifi and hotspot
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/tiap_loader.sh:system/bin/tiap_loader.sh \
     device/semc/msm7x27-common/prebuilt/10dnsconf:system/etc/init.d/10dnsconf \
     device/semc/msm7x27-common/prebuilt/10hostapconf:system/etc/init.d/10hostapconf \
     device/semc/msm7x27-common/prebuilt/hostapd.conf:system/etc/wifi/softap/hostapd.conf \
     device/semc/msm7x27-common/prebuilt/dnsmasq.conf:system/etc/wifi/dnsmasq.conf \
-    device/semc/msm7x27-common/prebuilt/tiwlan.ini:system/etc/wifi/tiwlan.ini \
-    device/semc/msm7x27-common/prebuilt/tiwlan_ap.ini:system/etc/wifi/softap/tiwlan_ap.ini \
     device/semc/msm7x27-common/prebuilt/tiwlan_firmware.bin:system/etc/wifi/tiwlan_firmware.bin \
     device/semc/msm7x27-common/prebuilt/tiwlan_firmware_ap.bin:system/etc/wifi/softap/tiwlan_firmware_ap.bin 
 
@@ -258,6 +265,10 @@ PRODUCT_COPY_FILES += \
 # ANT
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/AntHalService.apk:system/app/AntHalService.apk
+
+# Hciattach
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
