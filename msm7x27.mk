@@ -16,6 +16,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     copybit.delta \
     gralloc.delta \
+    gralloc.msm7x27 \
     hwcomposer.default \
     hwcomposer.msm7x27 \
     libgenlock \
@@ -48,7 +49,7 @@ PRODUCT_PACKAGES += \
     screencap \
     hostap \
     rzscontrol \
-    UpdateNotify \
+    CMUpdateNotify \
     com.android.future.usb.accessory
 
 # FM Radio
@@ -126,7 +127,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.networklocation=1 \
     ro.ril.enable.a52=1 \
     ro.ril.enable.a53=1 \
-    ro.telephony.ril.v3=skipbrokendatacall,signalstrength,datacall \
+    ro.telephony.ril.v3=icccardstatus,skipbrokendatacall,signalstrength,datacall \
     ro.media.enc.file.format       = 3gp,mp4 \
     ro.media.enc.vid.codec         = m4v,h263 \
     ro.media.enc.vid.h263.width    = 176,640 \
@@ -260,7 +261,13 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
     device/semc/msm7x27-common/prebuilt/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
     device/semc/msm7x27-common/prebuilt/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
-    device/semc/msm7x27-common/prebuilt/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
+    device/semc/msm7x27-common/prebuilt/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
+    device/semc/msm7x27-common/prebuilt/eglsubAndroid.so:system/lib/egl/eglsubAndroid.so \
+    device/semc/msm7x27-common/prebuilt/libC2D2.so:system/lib/libC2D2.so \
+    device/semc/msm7x27-common/prebuilt/libOpenVG.so:system/lib/libOpenVG.so \
+    device/semc/msm7x27-common/prebuilt/libsc-a2xx.so:system/lib/libsc-a2xx.so \
+    device/semc/msm7x27-common/prebuilt/yamato_pfp.fw:system/etc/firmware/yamato_pfp.fw \
+    device/semc/msm7x27-common/prebuilt/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw
 
 # ANT
 PRODUCT_COPY_FILES += \
@@ -269,6 +276,11 @@ PRODUCT_COPY_FILES += \
 # Hciattach
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
+
+# Prebuilt GB libcamera needed by camerahal
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/libcamera.so:obj/lib/libcamera.so \
+    device/semc/msm7x27-common/prebuilt/libcamera.so:system/lib/libcamera.so
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
