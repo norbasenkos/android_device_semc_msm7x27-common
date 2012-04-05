@@ -6,16 +6,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.modversion=$(MiniCM_VERSION) \
 	ro.cm.version=$(MiniCM_VERSION)
 
-# Gps sensors audio
+# Gps / Audio
 PRODUCT_PACKAGES += \
     gps.delta \
+    audio.a2dp.default \
     audio_policy.delta \
     audio.primary.delta
 
 # GPU
 PRODUCT_PACKAGES += \
-    copybit.delta \
-    gralloc.delta \
+    copybit.msm7x27 \
+    gralloc.default \
     gralloc.msm7x27 \
     hwcomposer.default \
     hwcomposer.msm7x27 \
@@ -82,7 +83,7 @@ PRODUCT_COPY_FILES += \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml    
 
 # Gps config
-PRODUCT_COPY_FILES += \
+PRODUCT_COPaudio.a2dp.defaultY_FILES += \
     device/semc/msm7x27-common/prebuilt/gps.conf:system/etc/gps.conf
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -180,7 +181,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     hwui.render_dirty_regions=false \
     hwui.disable_vsync=true \
     hwui.print_config=choice \
-    debug.enabletr=false
+    debug.enabletr=false \
+    com.qc.hardware=true
 
 # Compcache
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -224,8 +226,7 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/SemcSmfmf.jar:system/framework/SemcSmfmf.jar \
     device/semc/msm7x27-common/prebuilt/vold.fstab:system/etc/vold.fstab \
     device/semc/msm7x27-common/prebuilt/AudioFilter.csv:system/etc/AudioFilter.csv \
-    device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
-    device/semc/msm7x27-common/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc
+    device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -278,9 +279,9 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
 
 # Prebuilt GB libcamera needed by camerahal
-PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/libcamera.so:obj/lib/libcamera.so \
-    device/semc/msm7x27-common/prebuilt/libcamera.so:system/lib/libcamera.so
+#PRODUCT_COPY_FILES += \
+#    device/semc/msm7x27-common/prebuilt/libcamera.so:obj/lib/libcamera.so \
+#    device/semc/msm7x27-common/prebuilt/libcamera.so:system/lib/libcamera.so
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
