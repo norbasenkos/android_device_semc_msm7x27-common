@@ -1,7 +1,7 @@
 #
 # Set ro.modversion and ro.cm.version
 #
-MiniCM_VERSION := MiniCM9-3.0.0
+MiniCM_VERSION := MiniCM9-3.0.1
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.modversion=$(MiniCM_VERSION) \
 	ro.cm.version=$(MiniCM_VERSION)
@@ -20,6 +20,7 @@ PRODUCT_PACKAGES += \
     gralloc.msm7x27 \
     hwcomposer.default \
     hwcomposer.msm7x27 \
+    camera.msm7x27 \
     libgenlock \
     libmemalloc \
     libtilerenderer \
@@ -29,9 +30,11 @@ PRODUCT_PACKAGES += \
 # Omx
 PRODUCT_PACKAGES += \
     libmm-omxcore \
+    libdivxdrmdecrypt \
     libOmxCore \
     libOmxVidEnc \
     libOmxVdec \
+    libOmxVenc \
     libstagefrighthw \
     libopencorehw
 
@@ -114,6 +117,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # 16bpp alpha
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.use_16bpp_alpha=1
+
+# Dithering
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.use_dithering=1
 
 # Default network type
 # 0 => WCDMA Preferred.
@@ -277,11 +284,6 @@ PRODUCT_COPY_FILES += \
 # Hciattach
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
-
-# Prebuilt GB libcamera needed by camerahal
-#PRODUCT_COPY_FILES += \
-#    device/semc/msm7x27-common/prebuilt/libcamera.so:obj/lib/libcamera.so \
-#    device/semc/msm7x27-common/prebuilt/libcamera.so:system/lib/libcamera.so
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
