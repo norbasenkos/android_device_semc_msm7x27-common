@@ -3,8 +3,8 @@
 #
 MiniCM_VERSION := MiniCM9-3.0.1
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.modversion=$(MiniCM_VERSION) \
-	ro.cm.version=$(MiniCM_VERSION)
+    ro.modversion=$(MiniCM_VERSION) \
+    ro.cm.version=$(MiniCM_VERSION)
 
 # Gps / Audio
 PRODUCT_PACKAGES += \
@@ -154,7 +154,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.enable-scan=true \
     media.stagefright.enable-http=true \
     keyguard.no_require_sim=true \
-    windowsmgr.max_events_per_sec=150
+    windowsmgr.max_events_per_sec=150 \
+    debug.camcorder.disablemeta=1
 
 # Dalvik properties - read from AndroidRuntime
 # dexop-flags:
