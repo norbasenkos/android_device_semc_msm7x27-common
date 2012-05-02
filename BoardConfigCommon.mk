@@ -93,7 +93,6 @@ TARGET_GRALLOC_USES_ASHMEM := false
 
 ## Skia
 BOARD_USE_SKIA_LCDTEXT := true
-#ALLOW_DEQUEUE_CURRENT_BUFFER := true
 
 ## Kernel
 BOARD_KERNEL_CMDLINE := console=null
@@ -109,7 +108,9 @@ BOARD_CUSTOM_BOOTIMG_MK := device/semc/msm7x27-common/custombootimg.mk
 ## Audio
 TARGET_PROVIDES_LIBAUDIO := true
 BOARD_USES_GENERIC_AUDIO := false
+BOARD_COMBO_DEVICE_SUPPORTED := true
 
+## Odex
 WITH_DEXPREOPT := false
 
 ## Recovery

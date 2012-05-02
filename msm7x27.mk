@@ -6,6 +6,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(MiniCM_VERSION) \
     ro.cm.version=$(MiniCM_VERSION)
 
+# MiniCM9 theme selection
+#DEVICE_PACKAGE_OVERLAYS += vendor/minicm/overlay
+
 # Gps / Audio
 PRODUCT_PACKAGES += \
     gps.delta \
@@ -95,6 +98,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libril-qc-1.so \
     rild.libargs=-d/dev/smd0 \
+    ro.ril.hep=1 \
+    ro.ril.hsdpa.category=28 \
+    ro.ril.enable.dtm=1 \
+    ro.ril.enable.3g.prefix=1 \
     ro.ril.hsxpa=2 \
     ro.ril.gprsclass=10 \
     ro.ril.hsupa.category=5 \
@@ -168,7 +175,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dexopt-data-only=1 \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.execution-mode=int:jit \
-    dalvik.vm.heapsize=48m
+    dalvik.vm.heapsize=32m
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -276,7 +283,8 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/libOpenVG.so:system/lib/libOpenVG.so \
     device/semc/msm7x27-common/prebuilt/libsc-a2xx.so:system/lib/libsc-a2xx.so \
     device/semc/msm7x27-common/prebuilt/yamato_pfp.fw:system/etc/firmware/yamato_pfp.fw \
-    device/semc/msm7x27-common/prebuilt/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw
+    device/semc/msm7x27-common/prebuilt/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw \
+    device/semc/msm7x27-common/prebuilt/adreno_config.txt:system/etc/adreno_config.txt
 
 # ANT
 PRODUCT_COPY_FILES += \
