@@ -32,6 +32,13 @@
 #define NO_ERROR 0
 //#define LOGV LOGI
 #define GRALLOC_USAGE_PMEM_PRIVATE_ADSP GRALLOC_USAGE_PRIVATE_0
+#define MSM_COPY_HW 1
+#define HWA 1
+#ifdef HWA
+#include "qcom/display/libgralloc/gralloc_priv.h"
+#else
+#include "libhardware/modules/gralloc/gralloc_priv.h"
+#endif
 
 
 struct blitreq {
@@ -40,7 +47,9 @@ struct blitreq {
 };
 
 /* Prototypes and extern functions. */
-extern "C" android::sp<android::CameraHardwareInterface> openCameraHardware(int id);
+android::sp<android::CameraHardwareInterface> (*LINK_openCameraHardware)(int id);
+int (*LINK_getNumberofCameras)(void);
+void (*LINK_getCameraInfo)(int cameraId, struct camera_info *info);
 int qcamera_device_open(const hw_module_t* module, const char* name,
                         hw_device_t** device);
 int CameraHAL_GetNum_Cameras(void);
@@ -99,6 +108,10 @@ CameraHAL_CopyBuffers_Hw(int srcFd, int destFd,
     bool   success = true;
     int    fb_fd = open("/dev/graphics/fb0", O_RDWR);
 
+#ifndef MSM_COPY_HW
+    return false;
+#endif
+
     if (fb_fd < 0) {
        LOGE("CameraHAL_CopyBuffers_Hw: Error opening /dev/graphics/fb0");
        return false;
@@ -114,6 +127,7 @@ CameraHAL_CopyBuffers_Hw(int srcFd, int destFd,
     blit.req.flags       = 0;
     blit.req.alpha       = 0xff;
     blit.req.transp_mask = 0xffffffff;
+    blit.req.sharpening_strength = 64;  /* -127 <--> 127, default 64 */
 
     blit.req.src.width     = w;
     blit.req.src.height    = h;
@@ -208,7 +222,11 @@ CameraHAL_HandlePreviewData(const android::sp<android::IMemory>& dataPtr,
       ssize_t  offset;
       size_t   size;
       int32_t  previewFormat = MDP_Y_CBCR_H2V2;
+#ifdef HWA
       int32_t  destFormat    = MDP_RGBX_8888;
+#else
+      int32_t  destFormat    = MDP_RGBA_8888;
+#endif
 
       android::status_t retVal;
       android::sp<android::IMemoryHeap> mHeap = dataPtr->getMemory(&offset,
@@ -218,13 +236,19 @@ CameraHAL_HandlePreviewData(const android::sp<android::IMemory>& dataPtr,
            "offset:%#x size:%#x base:%p\n", previewWidth, previewHeight,
            (unsigned)offset, size, mHeap != NULL ? mHeap->base() : 0);
 
-      /*mWindow->set_usage(mWindow,
+      mWindow->set_usage(mWindow,
+#ifndef HWA
                          GRALLOC_USAGE_PMEM_PRIVATE_ADSP |
-                         GRALLOC_USAGE_SW_READ_OFTEN);*/
-
+#endif
+                         GRALLOC_USAGE_SW_READ_OFTEN);
       retVal = mWindow->set_buffers_geometry(mWindow,
                                              previewWidth, previewHeight,
-                                             HAL_PIXEL_FORMAT_RGBX_8888);
+#ifdef HWA
+                                             HAL_PIXEL_FORMAT_RGBX_8888
+#else
+                                             HAL_PIXEL_FORMAT_RGBA_8888
+#endif
+                                             );
       if (retVal == NO_ERROR) {
          int32_t          stride;
          buffer_handle_t *bufHandle = NULL;
@@ -361,10 +385,11 @@ CameraHAL_GetCam_Info(int camera_id, struct camera_info *info)
 void
 CameraHAL_FixupParams(android::CameraParameters &settings)
 {
+// FIXME TODO
    const char *preview_sizes =
-      "640x480,576x432,480x320,384x288,352x288,320x240,240x160,176x144";
+      "640x480,480x320,352x288,320x240,176x144";
    const char *video_sizes =
-      "640x480,352x288,320x240,176x144";
+      "640x480,480x320,352x288,320x240,176x144";
    const char *preferred_size       = "640x480";
    const char *preview_frame_rates  = "30,27,24,15";
    const char *preferred_frame_rate = "15";
@@ -386,10 +411,10 @@ CameraHAL_FixupParams(android::CameraParameters &settings)
                    preview_sizes);
    }
 
-   if (!settings.get(android::CameraParameters::KEY_SUPPORTED_VIDEO_SIZES)) {
+   /*if (!settings.get(android::CameraParameters::KEY_SUPPORTED_VIDEO_SIZES)) {
       settings.set(android::CameraParameters::KEY_SUPPORTED_VIDEO_SIZES,
                    video_sizes);
-   }
+   }*/
 
    if (!settings.get(android::CameraParameters::KEY_VIDEO_SIZE)) {
       settings.set(android::CameraParameters::KEY_VIDEO_SIZE, preferred_size);
@@ -657,7 +682,7 @@ qcamera_send_command(struct camera_device * device, int32_t cmd,
 {
    LOGV("qcamera_send_command: cmd:%d arg0:%d arg1:%d\n",
         cmd, arg0, arg1);
-   return NO_ERROR;
+   return qCamera->sendCommand(cmd, arg0, arg1);
 }
 
 void
@@ -704,13 +729,35 @@ qcamera_device_open(const hw_module_t* module, const char* name,
                    hw_device_t** device)
 {
 
+   void *libcameraHandle;
    int cameraId = atoi(name);
    signal(SIGFPE,(*sighandle)); //@nAa: Bad boy doing hacks
 
    LOGD("qcamera_device_open: name:%s device:%p cameraId:%d\n",
         name, device, cameraId);
 
-   qCamera = openCameraHardware(cameraId);
+   libcameraHandle = ::dlopen("libcamera.so", RTLD_NOW);
+   LOGD("loading libcamera at %p", libcameraHandle);
+   if (!libcameraHandle) {
+       LOGE("FATAL ERROR: could not dlopen libcamera.so: %s", dlerror());
+       return false;
+   }
+
+   if (::dlsym(libcameraHandle, "openCameraHardware") != NULL) {
+      *(void**)&LINK_openCameraHardware =
+               ::dlsym(libcameraHandle, "openCameraHardware");
+   } else if (::dlsym(libcameraHandle, "HAL_openCameraHardware") != NULL) {
+      *(void**)&LINK_openCameraHardware =
+               ::dlsym(libcameraHandle, "HAL_openCameraHardware");
+   } else {
+      LOGE("FATAL ERROR: Could not find openCameraHardware");
+      dlclose(libcameraHandle);
+      return false;
+   }
+
+   qCamera = LINK_openCameraHardware(cameraId);
+   ::dlclose(libcameraHandle);
+
    camera_device_t* camera_device = NULL;
    camera_device_ops_t* camera_ops = NULL;
 
