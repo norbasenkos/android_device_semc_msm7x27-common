@@ -1,13 +1,15 @@
 #
 # Set ro.modversion and ro.cm.version
 #
-MiniCM_VERSION := MiniCM9-3.0.1
+MiniCM_VERSION := MiniCM9-3.0.2
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(MiniCM_VERSION) \
     ro.cm.version=$(MiniCM_VERSION)
 
 # MiniCM9 theme selection
 #DEVICE_PACKAGE_OVERLAYS += vendor/minicm/overlay
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/MiniCM9.apk:system/app/MiniCM9.apk
 
 # Gps / Audio
 PRODUCT_PACKAGES += \
@@ -35,7 +37,6 @@ PRODUCT_PACKAGES += \
     libmm-omxcore \
     libdivxdrmdecrypt \
     libOmxCore \
-    libOmxVidEnc \
     libOmxVdec \
     libOmxVenc \
     libstagefrighthw \
@@ -68,6 +69,9 @@ PRODUCT_PACKAGES += \
     libfmrx \
     libfm_stack \
     FmRxService
+
+PRODUCT_PACKAGES += \
+    e2fsck
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -127,7 +131,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Dithering
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.use_dithering=1
+    persist.sys.use_dithering=0
 
 # Default network type
 # 0 => WCDMA Preferred.
@@ -218,7 +222,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.performance.tuning=1 \
     video.accelerate.hw=1 \
     net.bt.name=Android-MiniCM9 \
-    pm.sleep_mode=2
+    pm.sleep_mode=1 \
+    persist.pmem.camera=4000000
 
 # Enable ti hotspot
 PRODUCT_PROPERTY_OVERRIDES += \
