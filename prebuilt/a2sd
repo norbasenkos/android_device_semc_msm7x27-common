@@ -242,7 +242,7 @@ in
                        echo -e "unmounting $SD_EXT_DIRECTORY"
                        $bb umount $SD_EXT_DIRECTORY
                        echo -e "formating $a2sdblk"
-                       /system/bin/mke2fs -T ext4 $a2sdblk
+                       /system/xbin/mke2fs -T ext4 $a2sdblk
                        echo -e "$ck done..."
                        reboot_now
                    fi;
