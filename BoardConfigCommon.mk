@@ -86,6 +86,7 @@ TARGET_USES_C2D_COMPOSITION := false
 USE_OPENGL_RENDERER := true
 BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 TARGET_GRALLOC_USES_ASHMEM := false
+#BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
 #BOARD_USE_NASTY_PTHREAD_CREATE_HACK := false
 #TARGET_HAVE_BYPASS := true # NEEDED(?) when we have new adreno libs (affects libgralloc and libhwcomposer)
 #BUILD_WITH_FULL_STAGEFRIGHT=true #not in grep anyways
@@ -115,13 +116,7 @@ WITH_DEXPREOPT := false
 
 ## Recovery
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
-BOARD_HAS_BOOT_RECOVERY := true
-BOARD_HAS_SMALL_RECOVERY := true
-BOARD_HAS_NO_MISC_PARTITION := true
-BOARD_USES_RECOVERY_CHARGEMODE := false
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_LDPI_RECOVERY := true
-#BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/semc/msm7x27-common/recovery/recovery_ui.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/semc/msm7x27-common/recovery/recovery_keys.c
 
 ## A custom ota package maker for a device without a boot partition
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/semc/msm7x27-common/releasetools/semc_ota_from_target_files

@@ -6,10 +6,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(MiniCM_VERSION) \
     ro.cm.version=$(MiniCM_VERSION)
 
-# MiniCM9 theme selection
-#DEVICE_PACKAGE_OVERLAYS += vendor/minicm/overlay
+# MiniCM9 theme
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/MiniCM9.apk:system/app/MiniCM9.apk
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.themeId=MiniCM9 \
+    persist.sys.themePackageName=com.darkdog.theme.minicm9
 
 # Gps / Audio
 PRODUCT_PACKAGES += \
@@ -49,7 +52,8 @@ PRODUCT_PACKAGES += \
     librs_jni \
     LiveWallpapers \
     MagicSmokeWallpapers \
-    VisualizationWallpapers
+    VisualizationWallpapers \
+    Apollo
 
 # Extra packages
 PRODUCT_PACKAGES += \

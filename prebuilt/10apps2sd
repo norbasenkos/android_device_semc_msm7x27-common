@@ -5,7 +5,7 @@
 # Adapted for MiniCM by nobodyAtall @ xda
 
 SD_EXT_DIRECTORY=/sd-ext;
-bb="/sbin/busybox";
+bb="/system/xbin/busybox";
 logit="log -p i -t apps2sd";
 
 # make sure $SD_EXT_DIRECTORY is actually mounted

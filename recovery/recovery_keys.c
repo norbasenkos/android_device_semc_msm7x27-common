@@ -20,31 +20,12 @@
 #include "common.h"
 #include "extendedcommands.h"
 
-char* MENU_HEADERS[] = { NULL };
-
-char* MENU_ITEMS[] = { "reboot system now",
-                       "apply update from sdcard",
-                       "wipe data/factory reset",
-                       "wipe cache partition",
-                       "install zip from sdcard",
-                       "backup and restore",
-                       "mounts and storage",
-                       "advanced",
-                       "power off",
-                       NULL };
-
-int device_recovery_start() {
-    return 0;
-}
 
 int device_toggle_display(volatile char* key_pressed, int key_code) {
     // hold power and press volume-up
     return key_pressed[KEY_POWER] && key_code == KEY_VOLUMEUP;
 }
 
-int device_reboot_now(volatile char* key_pressed, int key_code) {
-    return 0;
-}
 
 int device_handle_key(int key_code, int visible) {
     if (visible) {
@@ -64,27 +45,21 @@ int device_handle_key(int key_code, int visible) {
                 if (ui_get_showing_back_button()) {
                     return SELECT_ITEM;
                 }
-                if (!get_allow_toggle_display())
-                    return GO_BACK;
                 break;
             case KEY_HOME:
             case KEY_LEFTBRACE:
             case KEY_ENTER:
             case BTN_MOUSE:
-            case KEY_CENTER:
             case KEY_CAMERA:
             case KEY_F21:
             case KEY_SEND:
                 return SELECT_ITEM;
-            
             case KEY_END:
             case KEY_BACKSPACE:
             case KEY_SEARCH:
                 if (ui_get_showing_back_button()) {
                     return SELECT_ITEM;
                 }
-                if (!get_allow_toggle_display())
-                    return GO_BACK;
             case KEY_BACK:
                 return GO_BACK;
         }
@@ -93,10 +68,3 @@ int device_handle_key(int key_code, int visible) {
     return NO_ACTION;
 }
 
-int device_perform_action(int which) {
-    return which;
-}
-
-int device_wipe_data() {
-    return 0;
-}

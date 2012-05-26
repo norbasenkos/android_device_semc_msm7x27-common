@@ -50,7 +50,7 @@ reboot_now() {
     if [ "$answer" == "y" ]; then
         echo -e "$ck Rebooting..."
         $bb sync
-        /sbin/reboot
+        /system/bin/reboot
         exit;
     fi;
     exit;
