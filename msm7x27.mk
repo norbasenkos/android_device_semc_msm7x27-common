@@ -1,7 +1,7 @@
 #
 # Set ro.modversion and ro.cm.version
 #
-MiniCM_VERSION := MiniCM9-3.0.2
+MiniCM_VERSION := MiniCM9-3.0.3
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(MiniCM_VERSION) \
     ro.cm.version=$(MiniCM_VERSION)
