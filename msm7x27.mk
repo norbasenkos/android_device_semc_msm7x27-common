@@ -100,6 +100,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPaudio.a2dp.defaultY_FILES += \
     device/semc/msm7x27-common/prebuilt/gps.conf:system/etc/gps.conf
 
+# Bluetooth configuration files
+PRODUCT_COPY_FILES += \
+    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.media.dec.jpeg.memcap=10000000
 
