@@ -151,6 +151,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.enable.a52=1 \
     ro.ril.enable.a53=1 \
     ro.telephony.ril.v3=icccardstatus,skipbrokendatacall,signalstrength,datacall \
+    ro.telephony.ril_skip_locked=true \
     ro.media.enc.file.format       = 3gp,mp4 \
     ro.media.enc.vid.codec         = m4v,h263 \
     ro.media.enc.vid.h263.width    = 176,640 \
