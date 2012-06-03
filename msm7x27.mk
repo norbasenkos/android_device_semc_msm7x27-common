@@ -1,3 +1,9 @@
+# Use minimal stuff due to low storage
+$(call inherit-product, vendor/cm/config/common_mini_phone.mk)
+
+# Extra Ringtones
+include frameworks/base/data/sounds/AudioPackageNewWave.mk
+
 #
 # Set ro.modversion and ro.cm.version
 #
@@ -77,6 +83,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     e2fsck
 
+# for bugmailer
+PRODUCT_PACKAGES += send_bug
+PRODUCT_COPY_FILES += \
+        system/extras/bugmailer/bugmailer.sh:system/bin/bugmailer.sh \
+        system/extras/bugmailer/send_bug:system/bin/send_bug
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -97,7 +109,7 @@ PRODUCT_COPY_FILES += \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml    
 
 # Gps config
-PRODUCT_COPaudio.a2dp.defaultY_FILES += \
+PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/gps.conf:system/etc/gps.conf
 
 # Bluetooth configuration files
@@ -154,8 +166,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.networklocation=1 \
     ro.ril.enable.a52=1 \
     ro.ril.enable.a53=1 \
-    ro.telephony.ril.v3=icccardstatus,skipbrokendatacall,signalstrength,datacall \
-    ro.telephony.ril_skip_locked=true \
+    ro.telephony.ril.v3=qcomuiccstack,icccardstatus,skipbrokendatacall,signalstrength,datacall \
+    ro.telephony.ril_skip_locked=false \
     ro.media.enc.file.format       = 3gp,mp4 \
     ro.media.enc.vid.codec         = m4v,h263 \
     ro.media.enc.vid.h263.width    = 176,640 \
@@ -230,7 +242,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.android.strictmode=0 \
     debug.performance.tuning=1 \
     video.accelerate.hw=1 \
-    net.bt.name=Android-MiniCM9 \
     pm.sleep_mode=1 \
     persist.pmem.camera=4000000
 
