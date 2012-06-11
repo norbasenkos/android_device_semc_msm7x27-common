@@ -4,14 +4,6 @@ $(call inherit-product, vendor/cm/config/common_mini_phone.mk)
 # Extra Ringtones
 include frameworks/base/data/sounds/AudioPackageNewWave.mk
 
-#
-# Set ro.modversion and ro.cm.version
-#
-MiniCM_VERSION := MiniCM9-3.0.3
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.modversion=$(MiniCM_VERSION) \
-    ro.cm.version=$(MiniCM_VERSION)
-
 # MiniCM9 theme
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/MiniCM9.apk:system/app/MiniCM9.apk
@@ -123,12 +115,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libril-qc-1.so \
     rild.libargs=-d/dev/smd0 \
     ro.ril.hep=1 \
-    ro.ril.hsdpa.category=28 \
+    ro.ril.hsdpa.category=10 \
     ro.ril.enable.dtm=1 \
     ro.ril.enable.3g.prefix=1 \
     ro.ril.hsxpa=2 \
     ro.ril.gprsclass=10 \
-    ro.ril.hsupa.category=5 \
+    ro.ril.hsupa.category=6 \
     ro.ril.disable.power.collapse=1 \
     ro.telephony.ril_class=SemcRIL \
     wifi.interface=tiwlan0
