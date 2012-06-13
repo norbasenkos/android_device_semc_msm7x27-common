@@ -72,6 +72,7 @@ PRODUCT_PACKAGES += \
     libfm_stack \
     FmRxService
 
+# ext3/4
 PRODUCT_PACKAGES += \
     e2fsck
 
@@ -80,6 +81,10 @@ PRODUCT_PACKAGES += send_bug
 PRODUCT_COPY_FILES += \
         system/extras/bugmailer/bugmailer.sh:system/bin/bugmailer.sh \
         system/extras/bugmailer/send_bug:system/bin/send_bug
+
+# for compcache
+PRODUCT_COPY_FILES += \
+        device/semc/msm7x27-common/prebuilt/rzscontrol:system/xbin/rzscontrol
 
 # Permissions
 PRODUCT_COPY_FILES += \
