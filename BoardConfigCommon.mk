@@ -90,7 +90,7 @@ TARGET_GRALLOC_USES_ASHMEM := false
 #BOARD_USE_NASTY_PTHREAD_CREATE_HACK := false
 #TARGET_HAVE_BYPASS := true # NEEDED(?) when we have new adreno libs (affects libgralloc and libhwcomposer)
 #BUILD_WITH_FULL_STAGEFRIGHT=true #not in grep anyways
-#TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
+TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
 
 ## Skia
 BOARD_USE_SKIA_LCDTEXT := true
