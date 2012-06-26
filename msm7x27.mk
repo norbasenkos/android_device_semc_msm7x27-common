@@ -21,7 +21,6 @@ PRODUCT_PACKAGES += \
 
 # GPU
 PRODUCT_PACKAGES += \
-    copybit.msm7x27 \
     gralloc.default \
     gralloc.msm7x27 \
     hwcomposer.default \
