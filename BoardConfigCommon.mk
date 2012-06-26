@@ -113,6 +113,9 @@ BOARD_COMBO_DEVICE_SUPPORTED := true
 ## Odex
 WITH_DEXPREOPT := false
 
+## Bootanimation
+TARGET_BOOTANIMATION_PRELOAD := true
+
 ## Recovery
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/semc/msm7x27-common/recovery/recovery_keys.c
