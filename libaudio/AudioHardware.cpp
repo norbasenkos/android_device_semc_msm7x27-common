@@ -45,7 +45,7 @@ namespace android_audio_legacy{
 static int audpre_index, tx_iir_index;
 static void * acoustic;
 const uint32_t AudioHardware::inputSamplingRates[] = {
-        8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 64000, 96000
+        8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 96000
 };
 
 static int get_audpp_filter(void);
@@ -89,6 +89,7 @@ static uint32_t SND_DEVICE_FARFIELD_CL=-1;
 static uint32_t SND_DEVICE_BT=-1;
 static uint32_t SND_DEVICE_BT_EC_OFF=-1;
 static uint32_t SND_DEVICE_HEADSET=-1;
+static uint32_t SND_DEVICE_HEADPHONE=-1;
 static uint32_t SND_DEVICE_FARFIELD_HEADSET=-1;
 static uint32_t SND_DEVICE_IN_S_SADC_OUT_HANDSET=-1;
 static uint32_t SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE=-1;
@@ -139,6 +140,7 @@ AudioHardware::AudioHardware() :
                 CHECK_FOR(BT);
                 CHECK_FOR(BT_EC_OFF);
                 CHECK_FOR(HEADSET);
+                CHECK_FOR(HEADPHONE);
                 CHECK_FOR(FARFIELD_HEADSET);
                 CHECK_FOR(IN_S_SADC_OUT_HANDSET);
                 CHECK_FOR(IN_S_SADC_OUT_SPEAKER_PHONE);
@@ -159,7 +161,7 @@ AudioHardware::AudioHardware() :
         }
         else LOGE("Could not retrieve number of MSM SND endpoints.");
 
-        int AUTO_VOLUME_ENABLED = 1; // setting enabled as default
+        int AUTO_VOLUME_ENABLED = 0; // setting enabled as default
 
         static const char *const path = "/system/etc/AutoVolumeControl.txt";
         int txtfd;
@@ -496,11 +498,12 @@ int check_and_set_audpp_parameters(char *buf, int size)
     uint16_t denominator[4];
     uint16_t shift[2];
 
-    if ((buf[0] == 'A') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3'))) {
+    if ((buf[0] == 'A') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3') || (buf[1] == '4'))) {
         /* IIR filter */
         if(buf[1] == '1') device_id=0;
         if(buf[1] == '2') device_id=1;
         if(buf[1] == '3') device_id=2;
+        if(buf[1] == '4') device_id=3;
         if (!(p = strtok(buf, ",")))
             goto token_err;
 
@@ -522,11 +525,12 @@ int check_and_set_audpp_parameters(char *buf, int size)
             goto token_err;
         iir_cfg[device_id].num_bands = (uint16_t)strtol(p, &ps, 16);
 
-    } else if ((buf[0] == 'B') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3'))) {
+    } else if ((buf[0] == 'B') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3') || (buf[1] == '4'))) {
         /* This is the ADRC record we are looking for.  Tokenize it */
         if(buf[1] == '1') device_id=0;
         if(buf[1] == '2') device_id=1;
         if(buf[1] == '3') device_id=2;
+        if(buf[1] == '4') device_id=3;
         adrc_filter_exists[device_id] = true;
         if (!(p = strtok(buf, ",")))
             goto token_err;
@@ -576,11 +580,12 @@ int check_and_set_audpp_parameters(char *buf, int size)
         if (!(p = strtok(NULL, seps)))
             goto token_err;
 
-    } else if (buf[0] == 'C' && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3'))) {
+    } else if (buf[0] == 'C' && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3') || (buf[1] == '4'))) {
         /* This is the EQ record we are looking for.  Tokenize it */
         if(buf[1] == '1') device_id=0;
         if(buf[1] == '2') device_id=1;
         if(buf[1] == '3') device_id=2;
+        if(buf[1] == '4') device_id=3;
         if (!(p = strtok(buf, ",")))
             goto token_err;
 
@@ -636,11 +641,12 @@ int check_and_set_audpp_parameters(char *buf, int size)
         }
         ::dlclose(audioeq);
 
-    } else if ((buf[0] == 'D') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3'))) {
+    } else if ((buf[0] == 'D') && ((buf[1] == '1') || (buf[1] == '2') || (buf[1] == '3') || (buf[1] == '4'))) {
      /* This is the MB_ADRC record we are looking for.  Tokenize it */
         if(buf[1] == '1') device_id=0;
         if(buf[1] == '2') device_id=1;
         if(buf[1] == '3') device_id=2;
+        if(buf[1] == '4') device_id=3;
         mbadrc_filter_exists[device_id] = true;
         if (!(p = strtok(buf, ",")))
             goto token_err;
@@ -952,12 +958,17 @@ static int msm72xx_enable_postproc(bool state)
     if(snd_device == SND_DEVICE_HANDSET_CL)
     {
         device_id = 1;
-        LOGI("set device to SND_DEVICE_HANDSET device_id=1");
+        LOGI("set device to SND_DEVICE_HANDSET_CL device_id=1");
     }
     if(snd_device == SND_DEVICE_HEADSET)
     {
         device_id = 2;
         LOGI("set device to SND_DEVICE_HEADSET device_id=2");
+    }
+    if(snd_device == SND_DEVICE_HEADPHONE)
+    {
+        device_id = 3;
+        LOGI("set device to SND_DEVICE_HEADPHONE device_id=3");
     }
 
     fd = open(PCM_CTL_DEVICE, O_RDWR);
@@ -1078,7 +1089,6 @@ static unsigned calculate_audpre_table_index(unsigned index)
 {
     switch (index) {
         case 96000:    return SAMP_RATE_INDX_96000;
-        case 64000:    return SAMP_RATE_INDX_64000;
         case 48000:    return SAMP_RATE_INDX_48000;
         case 44100:    return SAMP_RATE_INDX_44100;
         case 32000:    return SAMP_RATE_INDX_32000;
@@ -1158,7 +1168,7 @@ status_t AudioHardware::setVoiceVolume(float v)
         v = 1.0;
     }
 
-    int vol = lrint(v * 6.0) + 1;
+    int vol = lrint(v * 1.0);
     LOGD("setVoiceVolume(%f)\n", v);
     LOGI("Setting in-call volume to %d (available range is 0 to 7)\n", vol);
 
@@ -1176,12 +1186,13 @@ status_t AudioHardware::setVoiceVolume(float v)
 status_t AudioHardware::setMasterVolume(float v)
 {
     android::Mutex::Autolock lock(mLock);
-    int vol = ceil(v * 5.0);
+    int vol = ceil(v * 7.0);
     LOGI("Set master volume to %d.\n", vol);
     set_volume_rpc(SND_DEVICE_HANDSET_CL, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_FARFIELD_CL, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_HEADSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HEADPHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     // We return an error code here to let the audioflinger do in-software

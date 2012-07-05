@@ -45,8 +45,7 @@ namespace android_audio_legacy {
 #define SAMP_RATE_INDX_32000	6
 #define SAMP_RATE_INDX_44100	7
 #define SAMP_RATE_INDX_48000	8
-#define SAMP_RATE_INDX_64000	9
-#define SAMP_RATE_INDX_96000	10
+#define SAMP_RATE_INDX_96000	9
 
 #define EQ_MAX_BAND_NUM 12
 
@@ -167,9 +166,7 @@ public:
 
     virtual status_t    setVoiceVolume(float volume);
     virtual status_t    setMasterVolume(float volume);
-//#ifdef HAVE_FM_RADIO
     virtual status_t    setFmVolume(float volume);
-//#endif
     virtual status_t    setMode(int mode);
 
     // mic mute
@@ -215,10 +212,8 @@ private:
     bool        checkOutputStandby();
     status_t    doRouting(AudioStreamInMSM72xx *input);
     int previous_snd_device;
-//#ifdef HAVE_FM_RADIO
     status_t    setFmOnOff(bool onoff);
     status_t    setFmSpeakerOnOff(bool onoff);
-//#endif
     bool mFmRadioEnabled;
     bool mFmRadioSpeakerEnabled;
     AudioStreamInMSM72xx*   getActiveInput_l();
