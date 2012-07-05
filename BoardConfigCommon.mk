@@ -74,12 +74,13 @@ ARCH_ARM_HAVE_VFP := true
 ## browser/yt fix
 JS_ENGINE := v8
 HTTP := chrome
+ENABLE_WEBGL := true
+TARGET_FORCE_CPU_UPLOAD := true
 
 ## HW ACCEL
 BOARD_EGL_CFG := device/semc/msm7x27-common/prebuilt/egl.cfg
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_LEGACY_QCOM := false
-TARGET_FORCE_CPU_UPLOAD := true
 TARGET_USES_GENLOCK := true
 TARGET_USES_OVERLAY := true
 TARGET_USES_C2D_COMPOSITION := false
