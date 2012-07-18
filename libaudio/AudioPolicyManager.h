@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2009 The Android Open Source Project
+ * Copyright (C) 2012, Code Aurora Forum. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +35,7 @@ public:
 
         virtual ~AudioPolicyManager() {}
 
-        virtual uint32_t getDeviceForStrategy(routing_strategy strategy, bool fromCache = true);
+        virtual audio_devices_t getDeviceForStrategy(routing_strategy strategy, bool fromCache = true);
 protected:
         // true is current platform implements a back microphone
         virtual bool hasBackMicrophone() const { return false; }

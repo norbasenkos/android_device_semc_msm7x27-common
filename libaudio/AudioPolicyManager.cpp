@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2009 The Android Open Source Project
+ * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +15,15 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "AudioPolicyManager"
+#define LOG_TAG "AudioPolicyManager7627"
 //#define LOG_NDEBUG 0
 #include <utils/Log.h>
 #include "AudioPolicyManager.h"
 #include <media/mediarecorder.h>
 #include <fcntl.h>
+#include <cutils/properties.h> // for property_get
 
 namespace android_audio_legacy {
-
-
 
 // ----------------------------------------------------------------------------
 // AudioPolicyManager for msm7k platform
@@ -43,12 +43,12 @@ extern "C" void destroyAudioPolicyManager(AudioPolicyInterface *interface)
     delete interface;
 }
 
-uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, bool fromCache)
+audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, bool fromCache)
 {
     uint32_t device = 0;
 
     if (fromCache) {
-        LOGV("getDeviceForStrategy() from cache strategy %d, device %x", strategy, mDeviceForStrategy[strategy]);
+        ALOGV("getDeviceForStrategy() from cache strategy %d, device %x", strategy, mDeviceForStrategy[strategy]);
         return mDeviceForStrategy[strategy];
     }
 
@@ -98,7 +98,7 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
 
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_EARPIECE;
             if (device == 0) {
-                LOGE("getDeviceForStrategy() earpiece device not found");
+                ALOGE("getDeviceForStrategy() earpiece device not found");
             }
             break;
 
@@ -117,7 +117,7 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
 #endif
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
             if (device == 0) {
-                LOGE("getDeviceForStrategy() speaker device not found");
+                ALOGE("getDeviceForStrategy() speaker device not found");
             }
             break;
         }
@@ -133,7 +133,7 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
         }
         device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
         if (device == 0) {
-            LOGE("getDeviceForStrategy() speaker device not found");
+            ALOGE("getDeviceForStrategy() speaker device not found");
         }
         // The second device used for sonification is the same as the device used by media strategy
         // FALL THROUGH
@@ -177,17 +177,17 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
             !AudioSystem::isA2dpDevice((AudioSystem::audio_devices)device) &&
             device != getDeviceForStrategy(STRATEGY_PHONE)) {
             device = 0;
-            LOGV("getDeviceForStrategy() incompatible media and phone devices");
+            ALOGV("getDeviceForStrategy() incompatible media and phone devices");
         }
         } break;
 
     default:
-        LOGW("getDeviceForStrategy() unknown strategy: %d", strategy);
+        ALOGW("getDeviceForStrategy() unknown strategy: %d", strategy);
         break;
     }
 
-    LOGV("getDeviceForStrategy() strategy %d, device %x", strategy, device);
-    return device;
+    ALOGV("getDeviceForStrategy() strategy %d, device %x", strategy, device);
+    return (audio_devices_t)device;
 }
 
 status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_handle_t output, uint32_t device, int delayMs, bool force)
@@ -195,14 +195,14 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
 
     // do not change actual stream volume if the stream is muted
     if (mOutputs.valueFor(output)->mMuteCount[stream] != 0) {
-        LOGV("checkAndSetVolume() stream %d muted count %d", stream, mOutputs.valueFor(output)->mMuteCount[stream]);
+        ALOGV("checkAndSetVolume() stream %d muted count %d", stream, mOutputs.valueFor(output)->mMuteCount[stream]);
         return NO_ERROR;
     }
 
     // do not change in call volume if bluetooth is connected and vice versa
     if ((stream == AudioSystem::VOICE_CALL && mForceUse[AudioSystem::FOR_COMMUNICATION] == AudioSystem::FORCE_BT_SCO) ||
         (stream == AudioSystem::BLUETOOTH_SCO && mForceUse[AudioSystem::FOR_COMMUNICATION] != AudioSystem::FORCE_BT_SCO)) {
-        LOGV("checkAndSetVolume() cannot set stream %d volume with force use = %d for comm",
+        ALOGV("checkAndSetVolume() cannot set stream %d volume with force use = %d for comm",
              stream, mForceUse[AudioSystem::FOR_COMMUNICATION]);
         return INVALID_OPERATION;
     }
@@ -214,7 +214,7 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
     if (volume != mOutputs.valueFor(output)->mCurVolume[stream] ||
         (stream == AudioSystem::VOICE_CALL) || force) {
         mOutputs.valueFor(output)->mCurVolume[stream] = volume;
-        LOGV("setStreamVolume() for output %d stream %d, volume %f, delay %d", output, stream, volume, delayMs);
+        ALOGV("setStreamVolume() for output %d stream %d, volume %f, delay %d", output, stream, volume, delayMs);
         if (stream == AudioSystem::VOICE_CALL ||
             stream == AudioSystem::DTMF ||
             stream == AudioSystem::BLUETOOTH_SCO) {
