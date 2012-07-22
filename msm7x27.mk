@@ -32,6 +32,7 @@ PRODUCT_PACKAGES += \
     libmemalloc \
     libtilerenderer \
     libQcomUI \
+    libqdutils \
     liboverlay
 
 # Omx
@@ -51,8 +52,7 @@ PRODUCT_PACKAGES += \
     librs_jni \
     LiveWallpapers \
     MagicSmokeWallpapers \
-    VisualizationWallpapers \
-    Apollo
+    VisualizationWallpapers
 
 # Extra packages
 PRODUCT_PACKAGES += \
@@ -62,7 +62,9 @@ PRODUCT_PACKAGES += \
     rzscontrol \
     CMUpdateNotify \
     rild \
-    com.android.future.usb.accessory
+    com.android.future.usb.accessory \
+    Apollo \
+    make_ext4fs
 
 # FM Radio
 PRODUCT_PACKAGES += \
@@ -262,6 +264,7 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/vold.fstab:system/etc/vold.fstab \
     device/semc/msm7x27-common/prebuilt/AudioFilter.csv:system/etc/AudioFilter.csv \
     device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
+    device/semc/msm7x27-common/prebuilt/audio_policy.conf:system/etc/audio_policy.conf \
     device/semc/msm7x27-common/prebuilt/media_codecs.xml:system/etc/media_codecs.xml
 
 # Keylayouts
@@ -314,6 +317,11 @@ PRODUCT_COPY_FILES += \
 # Hciattach
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
+
+# Audio blobs from ICS
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/audio.primary.delta.so:system/lib/hw/audio.primary.delta.so \
+    device/semc/msm7x27-common/prebuilt/audio_policy.delta.so:system/lib/hw/audio_policy.delta.so
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
