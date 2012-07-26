@@ -71,10 +71,6 @@ PRODUCT_PACKAGES += \
     libfm_stack \
     FmRxService
 
-# ext3/4
-PRODUCT_PACKAGES += \
-    e2fsck
-
 # for bugmailer
 PRODUCT_PACKAGES += send_bug
 PRODUCT_COPY_FILES += \
