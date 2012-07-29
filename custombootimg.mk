@@ -16,6 +16,7 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(TARGET_PREBUILT_KERNEL) $(recovery_ramdisk) $(I
 	$(hide) rm $(PRODUCT_OUT)/result.elf
 
 INSTALLED_RECOVERYIMAGE_TARGET := $(PRODUCT_OUT)/recovery.img
+MKRECOVERYIMAGE_FINAL := $(HOST_OUT_EXECUTABLES)/mkyaffs2image
 $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) \
 	$(recovery_ramdisk) \
 	$(recovery_kernel)
@@ -23,4 +24,6 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) \
 	$(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) --output $@
 	@echo ----- Made recovery image -------- $@
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_RECOVERYIMAGE_PARTITION_SIZE),raw)
-
+	@echo ----- Making recovery image final ------
+	$(hide) $(MKRECOVERYIMAGE_FINAL) $(PRODUCT_OUT)/recovery/root/ $(PRODUCT_OUT)/recovery_final.img
+	@echo ----- Made recovery image final -------- $@
