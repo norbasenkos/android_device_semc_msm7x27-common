@@ -27,11 +27,11 @@ PRODUCT_PACKAGES += \
     gralloc.msm7x27 \
     hwcomposer.default \
     hwcomposer.msm7x27 \
+    copybit.msm7x27 \
     camera.msm7x27 \
     libgenlock \
     libmemalloc \
     libtilerenderer \
-    libQcomUI \
     libqdutils \
     liboverlay
 
@@ -64,7 +64,8 @@ PRODUCT_PACKAGES += \
     rild \
     com.android.future.usb.accessory \
     Apollo \
-    make_ext4fs
+    make_ext4fs \
+    setup_fs
 
 # FM Radio
 PRODUCT_PACKAGES += \
@@ -209,8 +210,8 @@ PRODUCT_PROPERTY_OVERRIDES += debug.sf.hw=1
 # Enable copybit composition
 PRODUCT_PROPERTY_OVERRIDES += debug.composition.type=mdp
 
-# Force 2 buffers - gralloc defaults to 3 and we only have 2
-PRODUCT_PROPERTY_OVERRIDES += debug.gr.numframebuffers=2
+# Force 3 buffers
+PRODUCT_PROPERTY_OVERRIDES += debug.gr.numframebuffers=3
 
 # HardwareRenderer properties
 # dirty_regions: "false" to disable partial invalidates, override if enabletr=true
