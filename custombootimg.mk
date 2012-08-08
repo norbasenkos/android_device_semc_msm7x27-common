@@ -21,6 +21,9 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) \
 	$(recovery_ramdisk) \
 	$(recovery_kernel)
 	@echo ----- Making recovery image ------
+	$(hide) cp -r device/semc/msm7x27-common/recovery/charger.tar.gz $(PRODUCT_OUT)/recovery/root/sbin/
+	$(hide) cp -r device/semc/msm7x27-common/recovery/init.rc $(PRODUCT_OUT)/recovery/root/
+	$(hide) cp -r device/semc/msm7x27-common/recovery/charger.sh $(PRODUCT_OUT)/recovery/root/
 	$(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) --output $@
 	@echo ----- Made recovery image -------- $@
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_RECOVERYIMAGE_PARTITION_SIZE),raw)
