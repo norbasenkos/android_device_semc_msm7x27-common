@@ -19,7 +19,8 @@ PRODUCT_PACKAGES += \
     audio_policy.delta \
     audio.primary.delta \
     wlan_loader \
-    wlan_cu
+    wlan_cu \
+    dhcpcd.conf
 
 # GPU
 PRODUCT_PACKAGES += \
@@ -266,7 +267,8 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/AudioFilter.csv:system/etc/AudioFilter.csv \
     device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
     device/semc/msm7x27-common/prebuilt/audio_policy.conf:system/etc/audio_policy.conf \
-    device/semc/msm7x27-common/prebuilt/media_codecs.xml:system/etc/media_codecs.xml
+    device/semc/msm7x27-common/prebuilt/media_codecs.xml:system/etc/media_codecs.xml \
+    device/semc/msm7x27-common/prebuilt/remount:system/xbin/remount \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -276,7 +278,7 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/usr/keylayout/systemconnector.kl:system/usr/keylayout/systemconnector.kl \
     device/semc/msm7x27-common/prebuilt/usr/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl
 
-## Wifi and hotspot
+# Wifi and hotspot
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/tiap_loader.sh:system/bin/tiap_loader.sh \
     device/semc/msm7x27-common/prebuilt/10dnsconf:system/etc/init.d/10dnsconf \
@@ -327,4 +329,3 @@ PRODUCT_COPY_FILES += \
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
-
