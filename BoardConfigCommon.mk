@@ -121,7 +121,6 @@ WITH_DEXPREOPT := false
 
 ## Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
-TARGET_BOOTANIMATION_TEXTURE_CACHE := false
 
 ## Recovery
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
