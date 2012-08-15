@@ -12,9 +12,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.themeId=MiniCM9 \
     persist.sys.themePackageName=com.darkdog.theme.minicm9
 
-# Gps / Audio / Wifi
+# Gps / Audio / Wifi / Sensors
 PRODUCT_PACKAGES += \
     gps.delta \
+    sensors.msm7x27 \
     audio.a2dp.default \
     audio_policy.delta \
     audio.primary.delta \
