@@ -4,21 +4,20 @@ $(call inherit-product, vendor/cm/config/common_mini_phone.mk)
 # Extra Ringtones
 include frameworks/base/data/sounds/AudioPackageNewWave.mk
 
-# MiniCM9 theme
-#PRODUCT_COPY_FILES += \
-#    device/semc/msm7x27-common/prebuilt/MiniCM9.apk:system/app/MiniCM9.apk
+# MiniCM10 theme
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/MiniCM10.apk:system/app/MiniCM10.apk
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.themeId=MiniCM9 \
-    persist.sys.themePackageName=com.darkdog.theme.minicm9
+    persist.sys.themeId=MiniCM10 \
+    persist.sys.themePackageName=com.darkdog.theme.minicm10
 
-# Gps / Audio / Wifi / Sensors
+# Gps / Audio / Wifi / Sensors / Lights
 PRODUCT_PACKAGES += \
     gps.delta \
     sensors.msm7x27 \
+    lights.msm7x27 \
     audio.a2dp.default \
-    audio_policy.delta \
-    audio.primary.delta \
     wlan_loader \
     wlan_cu \
     dhcpcd.conf
@@ -167,7 +166,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.enable.a52=1 \
     ro.ril.enable.a53=1 \
     ro.telephony.ril.v3=qcomuiccstack,icccardstatus,skipbrokendatacall,signalstrength,datacall \
-    ro.telephony.ril_skip_locked=false \
+    ro.telephony.ril_skip_locked=true \
     ro.media.enc.file.format       = 3gp,mp4 \
     ro.media.enc.vid.codec         = m4v,h263 \
     ro.media.enc.vid.h263.width    = 176,640 \
