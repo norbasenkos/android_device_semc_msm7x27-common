@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- * Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -302,6 +302,11 @@ struct private_handle_t {
         PRIV_FLAGS_SW_LOCK        = 0x00000080,
         PRIV_FLAGS_NONCONTIGUOUS_MEM = 0x00000100,
         PRIV_FLAGS_HWC_LOCK       = 0x00000200, // Set by HWC when storing the handle
+        PRIV_FLAGS_SECURE_BUFFER  = 0x00000400,
+        PRIV_FLAGS_UNSYNCHRONIZED = 0x00000800, // For explicit synchronization
+        PRIV_FLAGS_NOT_MAPPED     = 0x00001000, // Not mapped in userspace
+        PRIV_FLAGS_EXTERNAL_ONLY  = 0x00002000, // Display on external only
+        PRIV_FLAGS_EXTERNAL_BLOCK = 0x00004000, // Display only this buffer on external
     };
 
     // file-descriptors
