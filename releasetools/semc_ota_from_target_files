@@ -422,9 +422,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
     script.ShowProgress(0.2, 10)
     script.RunBackup("restore")
 
-  script.RunModelidCfg()
-
-  script.RunVerifyCachePartitionSize()
+  script.RunConfig("")
 
   if has_boot_partition:
     script.ShowProgress(0.2, 10)

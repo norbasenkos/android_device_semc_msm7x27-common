@@ -161,6 +161,8 @@ def LoadRecoveryFSTab(zip):
     p.mount_point = pieces[0]
     p.fs_type = pieces[1]
     p.device = pieces[2]
+    p.length = 0
+    options = None
     if len(pieces) >= 4 and pieces[3] != 'NULL':
       p.device2 = pieces[3]
     else:
