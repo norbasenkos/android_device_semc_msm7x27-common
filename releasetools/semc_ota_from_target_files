@@ -83,6 +83,7 @@ OPTIONS.omit_prereq = False
 OPTIONS.extra_script = None
 OPTIONS.worker_threads = 3
 OPTIONS.backuptool = False
+OPTIONS.modelidcfg = True
 OPTIONS.override_device = 'auto'
 
 def MostPopularKey(d, default):
@@ -380,7 +381,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
   AppendAssertions(script, input_zip)
   device_specific.FullOTA_Assertions()
   if OPTIONS.backuptool:
+    script.Mount("/system")
     script.RunBackup("backup")
+    script.Unmount("/system")
 
   script.ShowProgress(0.5, 0)
 
@@ -422,9 +425,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
     script.ShowProgress(0.2, 10)
     script.RunBackup("restore")
 
-  script.RunModelidCfg()
+  if OPTIONS.modelidcfg:
+    script.RunConfig("")
 
-  script.RunVerifyCachePartitionSize()
 
   if has_boot_partition:
     script.ShowProgress(0.2, 10)
@@ -440,14 +443,16 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.AddToZip(input_zip, output_zip)
   WriteMetadata(metadata, output_zip)
 
+def WritePolicyConfig(file_context, output_zip):
+  f = open(file_context, 'r');
+  basename = os.path.basename(file_context)
+  common.ZipWriteStr(output_zip, basename, f.read())
+
 
 def WriteMetadata(metadata, output_zip):
   common.ZipWriteStr(output_zip, "META-INF/com/android/metadata",
                      "".join(["%s=%s\n" % kv
                               for kv in sorted(metadata.iteritems())]))
-
-
-
 
 def LoadSystemFiles(z):
   """Load all the files from SYSTEM/... in a given target-files
@@ -745,6 +750,8 @@ def main(argv):
       OPTIONS.worker_threads = int(a)
     elif o in ("--backup"):
       OPTIONS.backuptool = bool(a.lower() == 'true')
+    elif o in ("--configid"):
+      OPTIONS.modelidcfg = bool(a.lower() == 'true')
     elif o in ("--override_device"):
       OPTIONS.override_device = a
     else:
