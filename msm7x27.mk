@@ -115,6 +115,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
 
+# hw_config.sh
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/hw_config.sh:system/etc/hw_config.sh
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.media.dec.jpeg.memcap=10000000
 
