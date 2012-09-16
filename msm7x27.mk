@@ -81,6 +81,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
         device/semc/msm7x27-common/prebuilt/rzscontrol:system/xbin/rzscontrol
 
+# Voice search workaround
+PRODUCT_COPY_FILES += \
+        device/semc/msm7x27-common/prebuilt/libvoicesearch.so:system/lib/libvoicesearch.so \
+        device/semc/msm7x27-common/prebuilt/VoiceSearch.apk:system/app/VoiceSearch.apk
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
