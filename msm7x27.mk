@@ -155,6 +155,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.use_dithering=0
 
+# Force GPU for 2D rendering
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.force_hw_ui=true
+
 # Default network type
 # 0 => WCDMA Preferred.
 PRODUCT_PROPERTY_OVERRIDES += \
