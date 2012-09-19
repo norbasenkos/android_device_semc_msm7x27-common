@@ -62,7 +62,6 @@ PRODUCT_PACKAGES += \
     screencap \
     hostap \
     rzscontrol \
-    CMUpdateNotify \
     rild \
     com.android.future.usb.accessory \
     Apollo \
