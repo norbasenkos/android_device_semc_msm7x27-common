@@ -18,6 +18,7 @@ PRODUCT_PACKAGES += \
     sensors.msm7x27 \
     lights.msm7x27 \
     audio.a2dp.default \
+    audio.usb.default \
     wlan_loader \
     wlan_cu \
     dhcpcd.conf
@@ -202,10 +203,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # "m=y" register map
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dexopt-flags=m=y \
-    dalvik.vm.checkjni=false \
+    dalvik.vm.checkjni=0 \
+    ro.kernel.android.checkjni=0 \
     dalvik.vm.dexopt-data-only=1 \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.execution-mode=int:jit \
+    dalvik.vm.verify_bytecode=false \
     dalvik.vm.heapsize=32m
 
 # we have enough storage space to hold precise GC data
