@@ -220,8 +220,8 @@ PRODUCT_PROPERTY_OVERRIDES += debug.sf.hw=1
 # Enable copybit composition
 PRODUCT_PROPERTY_OVERRIDES += debug.composition.type=mdp
 
-# Force 3 buffers
-PRODUCT_PROPERTY_OVERRIDES += debug.gr.numframebuffers=3
+# Force number of framebuffers
+PRODUCT_PROPERTY_OVERRIDES += debug.gr.numframebuffers=2
 
 # HardwareRenderer properties
 # dirty_regions: "false" to disable partial invalidates, override if enabletr=true
