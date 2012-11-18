@@ -17,6 +17,8 @@ PRODUCT_PACKAGES += \
     gps.delta \
     sensors.msm7x27 \
     lights.msm7x27 \
+    audio.primary.msm7x27 \
+    audio_policy.msm7x27 \
     audio.a2dp.default \
     audio.usb.default \
     wlan_loader \
@@ -49,16 +51,12 @@ PRODUCT_PACKAGES += \
 
 # Live wallpaper packages
 PRODUCT_PACKAGES += \
-    CMWallpapers \
     LiveWallpapersPicker \
-    librs_jni \
-    LiveWallpapers \
-    MagicSmokeWallpapers \
-    VisualizationWallpapers
+    librs_jni
 
 # Extra packages
 PRODUCT_PACKAGES += \
-    FileManager \
+    CMFileManager \
     screencap \
     hostap \
     rzscontrol \
@@ -153,7 +151,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Dithering
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.use_dithering=0
+    persist.sys.use_dithering=2
 
 # Force GPU for 2D rendering
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -220,17 +218,23 @@ PRODUCT_PROPERTY_OVERRIDES += debug.sf.hw=1
 # Enable copybit composition
 PRODUCT_PROPERTY_OVERRIDES += debug.composition.type=mdp
 
-# Force number of framebuffers
-PRODUCT_PROPERTY_OVERRIDES += debug.gr.numframebuffers=2
+# Force number of framebuffers and qcom optimizations
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.gr.numframebuffers=3 \
+    ro.max.fling_velocity=4000 \
+    debug.qctwa.statusbar=1 \
+    debug.qctwa.preservebuf=1
 
 # HardwareRenderer properties
 # dirty_regions: "false" to disable partial invalidates, override if enabletr=true
 PRODUCT_PROPERTY_OVERRIDES += \
     hwui.render_dirty_regions=false \
     hwui.disable_vsync=true \
+    debug.sf.no_hw_vsync=1 \
     hwui.print_config=choice \
     debug.enabletr=false \
     debug.hwui.render_dirty_regions=false \
+    debug.hwui.disable_vsync=true \
     com.qc.hardware=true
 
 # Compcache
@@ -330,11 +334,6 @@ PRODUCT_COPY_FILES += \
 # Hciattach
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
-
-# Audio blobs from ICS
-PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/audio.primary.delta.so:system/lib/hw/audio.primary.delta.so \
-    device/semc/msm7x27-common/prebuilt/audio_policy.delta.so:system/lib/hw/audio_policy.delta.so
 
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
