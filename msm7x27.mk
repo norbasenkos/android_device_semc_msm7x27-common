@@ -281,8 +281,12 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/AudioFilter.csv:system/etc/AudioFilter.csv \
     device/semc/msm7x27-common/prebuilt/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
     device/semc/msm7x27-common/prebuilt/audio_policy.conf:system/etc/audio_policy.conf \
-    device/semc/msm7x27-common/prebuilt/media_codecs.xml:system/etc/media_codecs.xml \
-    device/semc/msm7x27-common/prebuilt/remount:system/xbin/remount \
+    device/semc/msm7x27-common/prebuilt/remount:system/xbin/remount
+
+# Media configuration
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/media_profiles.xml:/system/etc/media_profiles.xml \
+    device/semc/msm7x27-common/prebuilt/media_codecs.xml:system/etc/media_codecs.xml
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
