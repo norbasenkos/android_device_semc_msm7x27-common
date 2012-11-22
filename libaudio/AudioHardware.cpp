@@ -118,7 +118,7 @@ static uint32_t SND_DEVICE_DHVH_FM=-1;
 // ----------------------------------------------------------------------------
 
 AudioHardware::AudioHardware() :
-    mInit(false), mMicMute(true), mBluetoothNrec(true), mBluetoothId(0),
+    mInit(false), mMicMute(true), mBluetoothNrec(true), mBluetoothId(0), mTtyMode(TTY_OFF),
     mOutput(0), mSndEndpoints(NULL), mCurSndDevice(-1), mDualMicEnabled(false), mBuiltinMicSelected(false), mFmRadioEnabled(false), mFmRadioSpeakerEnabled(false)
 {
    if (get_audpp_filter() == 0) {
@@ -1195,9 +1195,10 @@ status_t AudioHardware::setVoiceVolume(float v)
         v = 1.0;
     }
 
-    int vol = lrint(v * 5.0);
+    int vol = lrint(v * 7.0);
     ALOGD("setVoiceVolume(%f)\n", v);
     ALOGI("Setting in-call volume to %d (available range is 0 to 7)\n", vol);
+    if (vol == 0) vol++;
 
     if ((mCurSndDevice != -1) && ((mCurSndDevice == SND_DEVICE_TTY) || (mCurSndDevice == SND_DEVICE_VCO)))
     {

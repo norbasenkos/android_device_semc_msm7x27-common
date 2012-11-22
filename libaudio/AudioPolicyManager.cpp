@@ -93,6 +93,10 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
             // FALL THROUGH
 
         default:    // FORCE_NONE
+            device = AudioSystem::DEVICE_OUT_EARPIECE; //AUDIO_DEVICE_OUT_DEFAULT
+            if (device == 0) {
+                ALOGV("getDeviceForStrategy() earpiece device not found");
+            }
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADPHONE;
             if (device) break;
             device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET;
@@ -110,10 +114,6 @@ audio_devices_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strate
                 device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
             if (device) break;
 
-            device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_EARPIECE;
-            if (device == 0) {
-                ALOGE("getDeviceForStrategy() earpiece device not found");
-            }
             break;
 
         case AudioSystem::FORCE_SPEAKER:
@@ -235,6 +235,7 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
     }
 
     float volume = computeVolume(stream, index, output, device);
+    volume*=0.3;
     // We actually change the volume if:
     // - the float value returned by computeVolume() changed
     // - the force flag is set
