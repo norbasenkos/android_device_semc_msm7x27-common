@@ -4,13 +4,14 @@ $(call inherit-product, vendor/cm/config/common_mini_phone.mk)
 # Extra Ringtones
 include frameworks/base/data/sounds/AudioPackageNewWave.mk
 
-# MiniCM10 theme
+# MiniCM10 themes
 PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/MiniCM10.apk:system/app/MiniCM10.apk
+    device/semc/msm7x27-common/prebuilt/MiniCM10.apk:system/app/MiniCM10.apk \
+    device/semc/msm7x27-common/prebuilt/CrystalMiniCM10.apk:system/app/CrystalMiniCM10.apk
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.themeId=MiniCM10 \
-    persist.sys.themePackageName=com.darkdog.theme.minicm10
+    persist.sys.themeId=CrystalMiniCM10 \
+    persist.sys.themePackageName=com.darkdog.theme.crystalminicm10
 
 # Gps / Audio / Wifi / Sensors / Lights
 PRODUCT_PACKAGES += \
