@@ -162,7 +162,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # 0 => WCDMA Preferred.
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=0 \
-    ro.telephony.call_ring.delay=0 \
+    ro.telephony.call_ring.delay=1000 \
     ro.telephony.call_ring.multiple=false
 
 # Some more stuff:
