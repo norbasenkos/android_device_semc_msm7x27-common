@@ -336,10 +336,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/AntHalService.apk:system/app/AntHalService.apk
 
-# Hciattach
-PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/hciattach:system/bin/hciattach
-
 # Extra Cyanogen vendor files
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
