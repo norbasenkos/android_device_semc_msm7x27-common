@@ -18,7 +18,7 @@
  * Modifications are licensed under the License.
  */
 
-#define LOG_TAG "bluedroid"
+#define ALOG_TAG "bluedroid"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -43,7 +43,7 @@
 
 #define HCID_START_DELAY_SEC   3
 #define HCID_STOP_DELAY_USEC 500000
-#define HCIA_START_ATTEMPTS 300		// 15 sec per attempt
+#define HCIA_START_ATTEMPTS 300     // 15 sec per attempt
 
 #define MIN(x,y) (((x)<(y))?(x):(y))
 
@@ -380,7 +380,10 @@ int bt_is_enabled() {
         goto out;
     }
 
-    ret = hci_test_bit(HCI_UP, &dev_info.flags);
+    if (dev_info.flags & (1<<(HCI_UP & 31)))
+        ret = 1;
+    else
+        ret = 0;
 
 out:
     if (hci_sock >= 0) close(hci_sock);

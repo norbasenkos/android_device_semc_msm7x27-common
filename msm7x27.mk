@@ -13,7 +13,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.themeId=CrystalMiniCM10 \
     persist.sys.themePackageName=com.darkdog.theme.crystalminicm10
 
-# Gps / Audio / Wifi / Sensors / Lights
+# Gps / Audio / Sensors / Lights
 PRODUCT_PACKAGES += \
     gps.delta \
     sensors.msm7x27 \
@@ -22,9 +22,15 @@ PRODUCT_PACKAGES += \
     audio_policy.msm7x27 \
     audio.a2dp.default \
     audio.usb.default \
-    wlan_loader \
-    wlan_cu \
-    dhcpcd.conf
+
+# Wifi
+PRODUCT_PACKAGES += \
+    wpa_supplicant.conf \
+    hostapd_cli \
+    hostapd \
+    calibrator \
+    libnl \
+    iw
 
 # GPU
 PRODUCT_PACKAGES += \
@@ -59,7 +65,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     CMFileManager \
     screencap \
-    hostap \
     rzscontrol \
     rild \
     com.android.future.usb.accessory \
@@ -132,7 +137,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsupa.category=6 \
     ro.ril.disable.power.collapse=1 \
     ro.telephony.ril_class=SemcRIL \
-    wifi.interface=tiwlan0
+    wifi.interface=wlan0 \
+    wifi.softap.interface=wlan0 \
+    wifi.softapconcurrent.interface=wlan0
 
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
@@ -259,11 +266,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     pm.sleep_mode=1 \
     persist.pmem.camera=4000000
 
-# Enable ti hotspot
-PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.hotspot.ti=1 \
-    wifi.ap.interface = tiap0
-
 # Default ringtone
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.ringtone=CyanTone.ogg \
@@ -297,23 +299,20 @@ PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/usr/keylayout/systemconnector.kl:system/usr/keylayout/systemconnector.kl \
     device/semc/msm7x27-common/prebuilt/usr/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl
 
-# Wifi and hotspot
+# Wifi
 PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/tiap_loader.sh:system/bin/tiap_loader.sh \
-    device/semc/msm7x27-common/prebuilt/10dnsconf:system/etc/init.d/10dnsconf \
-    device/semc/msm7x27-common/prebuilt/10hostapconf:system/etc/init.d/10hostapconf \
-    device/semc/msm7x27-common/prebuilt/hostapd.conf:system/etc/wifi/softap/hostapd.conf \
-    device/semc/msm7x27-common/prebuilt/dnsmasq.conf:system/etc/wifi/dnsmasq.conf \
-    device/semc/msm7x27-common/prebuilt/tiwlan_firmware.bin:system/etc/wifi/tiwlan_firmware.bin \
-    device/semc/msm7x27-common/prebuilt/tiwlan_firmware_ap.bin:system/etc/wifi/softap/tiwlan_firmware_ap.bin 
+    device/semc/msm7x27-common/prebuilt/hostapd.conf:system/etc/wifi/hostapd.conf \
+    device/semc/msm7x27-common/prebuilt/wifiload:system/bin/wifiload \
+    device/semc/msm7x27-common/prebuilt/tiwlan.ini:system/etc/tiwlan.ini \
+    device/semc/msm7x27-common/prebuilt/wl1271-fw-multirole-roc.bin:system/etc/firmware/wl1271-fw-multirole-roc.bin 
 
 # A2SD and extra init files
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/a2sd:system/bin/a2sd \
     device/semc/msm7x27-common/prebuilt/00banner:system/etc/init.d/00banner \
+    device/semc/msm7x27-common/prebuilt/10dhcpcd:system/etc/init.d/10dhcpcd \
     device/semc/msm7x27-common/prebuilt/10apps2sd:system/etc/init.d/10apps2sd \
     device/semc/msm7x27-common/prebuilt/05mountext:system/etc/init.d/05mountext \
-    device/semc/msm7x27-common/prebuilt/04modules:system/etc/init.d/04modules \
     device/semc/msm7x27-common/prebuilt/06minicm:system/etc/init.d/06minicm \
     device/semc/msm7x27-common/prebuilt/zipalign:system/xbin/zipalign
 
