@@ -303,7 +303,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/hostapd.conf:system/etc/wifi/hostapd.conf \
     device/semc/msm7x27-common/prebuilt/wifiload:system/bin/wifiload \
-    device/semc/msm7x27-common/prebuilt/tiwlan.ini:system/etc/tiwlan.ini \
     device/semc/msm7x27-common/prebuilt/wl1271-fw-multirole-roc.bin:system/etc/firmware/wl1271-fw-multirole-roc.bin 
 
 # A2SD and extra init files
