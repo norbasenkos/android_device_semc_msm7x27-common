@@ -74,13 +74,13 @@ PRODUCT_PACKAGES += \
 
 # FM Radio
 PRODUCT_PACKAGES += \
-    hciattach \
-    com.ti.fm.fmreceiverif.xml \
-    fmreceiverif \
     Fmapplication \
-    libfmrx \
+    fmapp \
     libfm_stack \
-    FmRxService
+    fmreceiverif \
+    com.ti.fm.fmreceiverif.xml \
+    FmRxService \
+    libfmrx
 
 # for bugmailer
 PRODUCT_PACKAGES += send_bug
@@ -117,6 +117,10 @@ PRODUCT_COPY_FILES += \
 # Bluetooth configuration files
 PRODUCT_COPY_FILES += \
     system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
+
+# New Bluetooth firmware
+PRODUCT_COPY_FILES += \
+    device/semc/msm7x27-common/prebuilt/TIInit_7.2.31.bts:system/etc/firmware/TIInit_7.2.31.bts
 
 # hw_config.sh
 PRODUCT_COPY_FILES += \
@@ -277,7 +281,6 @@ PRODUCT_LOCALES += en
 # Extra prebuilt binaries
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/com.sonyericsson.suquashi.jar:system/framework/com.sonyericsson.suquashi.jar \
-    device/semc/msm7x27-common/prebuilt/Radio.apk:system/app/Radio.apk \
     device/semc/msm7x27-common/prebuilt/SystemConnector.apk:system/app/SystemConnector.apk \
     device/semc/msm7x27-common/prebuilt/SemcSmfmf.jar:system/framework/SemcSmfmf.jar \
     device/semc/msm7x27-common/prebuilt/vold.fstab:system/etc/vold.fstab \
