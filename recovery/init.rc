@@ -1,7 +1,6 @@
 on early-init
     start ueventd
-
-exec /sbin/sh /charger.sh
+    exec /sbin/sh /charger.sh
 
 on init
     export PATH /sbin
@@ -20,6 +19,8 @@ on init
     mkdir /data
     mkdir /cache
     mount /tmp /tmp tmpfs
+    start semc_chargalg
+    start console
 
 on boot
 
@@ -39,6 +40,13 @@ service adbd /sbin/adbd recovery
 
 service semc_chargalg /system/bin/semc_chargalg
     class main
+
+service console /sbin/sh
+    class core
+    console
+    disabled
+    user root
+    group log
 
 # Always start adbd on userdebug and eng builds
 # In recovery, always run adbd as root.
