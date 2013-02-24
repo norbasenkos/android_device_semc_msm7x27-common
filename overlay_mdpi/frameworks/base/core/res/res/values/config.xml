@@ -127,7 +127,7 @@
 
     <bool name="config_bluetooth_wide_band_speech">true</bool>
 
-    <bool name="config_bluetooth_adapter_quick_switch">false</bool>
+    <bool name="config_bluetooth_adapter_quick_switch">true</bool>
     <!-- XXXXX NOTE THE FOLLOWING RESOURCES USE THE WRONG NAMING CONVENTION.
          Please don't copy them, copy anything else. -->
 
