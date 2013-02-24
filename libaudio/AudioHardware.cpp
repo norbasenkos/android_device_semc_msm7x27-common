@@ -842,7 +842,7 @@ int check_and_set_audpp_parameters(char *buf, int size)
 
         agc_flag[device_id] = (uint16_t)strtol(p, &ps, 16);
         ALOGV("AGC flag = %02x.", agc_flag[device_id]);
-        if (agc_flag[device_id != 0])
+        if (agc_flag[device_id] != 0)
             enable_preproc_mask |= AGC_ENABLE;
         } else if ((buf[0] == 'G')) {
         /* This is the NS record we are looking for.  Tokenize it */
@@ -2187,8 +2187,8 @@ ssize_t AudioHardware::AudioStreamInMSM72xx::read( void* buffer, ssize_t bytes)
     size_t  aac_framesize= bytes;
     uint8_t* p = static_cast<uint8_t*>(buffer);
     uint32_t* recogPtr = (uint32_t *)p;
-    uint16_t* frameCountPtr;
-    uint16_t* frameSizePtr;
+    uint16_t* frameCountPtr = 0;
+    uint16_t* frameSizePtr = 0;
 
     if (mState < AUDIO_INPUT_OPENED) {
         AudioHardware *hw = mHardware;
