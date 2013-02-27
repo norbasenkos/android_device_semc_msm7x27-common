@@ -242,6 +242,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     hwui.render_dirty_regions=false \
     hwui.disable_vsync=true \
+    debug.mdpcomp.logs=0 \
     debug.sf.no_hw_vsync=1 \
     hwui.print_config=choice \
     debug.enabletr=false \
