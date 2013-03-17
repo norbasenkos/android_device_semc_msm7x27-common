@@ -6,11 +6,11 @@ include frameworks/base/data/sounds/AudioPackageNewWave.mk
 
 # MiniCM10 themes
 PRODUCT_COPY_FILES += \
-    device/semc/msm7x27-common/prebuilt/CrystalMiniCM10.apk:system/app/CrystalMiniCM10.apk
+    device/semc/msm7x27-common/prebuilt/Crystal2_v1.2.0.apk:system/app/Crystal2_v1.2.0.apk
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.themeId=CrystalMiniCM10 \
-    persist.sys.themePackageName=com.darkdog.theme.crystalminicm10
+    persist.sys.themeId=Crystal2 \
+    persist.sys.themePackageName=com.darkdog.theme.crystal2
 
 # Gps / Audio / Sensors / Lights
 PRODUCT_PACKAGES += \
