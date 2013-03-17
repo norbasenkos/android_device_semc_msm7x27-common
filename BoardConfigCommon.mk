@@ -132,7 +132,7 @@ BOARD_USES_GENERIC_AUDIO := false
 #BOARD_USES_AUDIO_LEGACY := false
 
 ## Odex
-WITH_DEXPREOPT := false
+WITH_DEXPREOPT := true
 
 ## Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
