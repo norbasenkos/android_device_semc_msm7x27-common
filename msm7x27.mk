@@ -4,7 +4,7 @@ $(call inherit-product, vendor/cm/config/common_mini_phone.mk)
 # Extra Ringtones
 include frameworks/base/data/sounds/AudioPackageNewWave.mk
 
-# MiniCM10 themes
+# MaxiCM10 themes
 PRODUCT_COPY_FILES += \
     device/semc/msm7x27-common/prebuilt/Crystal2_v1.2.0.apk:system/app/Crystal2_v1.2.0.apk
 
